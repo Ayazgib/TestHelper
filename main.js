@@ -12,10 +12,12 @@ function createTest (test) {
 }
 
 function setBlockPosition (e) {
-    block.style = `position: absolute; top: ${e.clientY}px; left: ${e.clientX}px;`
+    console.log(document.querySelector('body').scrollTop, block.scrollTop);
+    block.style = `position: absolute; top: ${e.clientY + window.pageYOffset}px; left: ${e.clientX}px;`
 }
 
-createTest(test);
+
+
 window.onload = function() {
     createTest(test);
 
@@ -23,7 +25,6 @@ window.onload = function() {
         while (block.firstElementChild) block.firstElementChild.remove();
         if (event.code == 'KeyZ') {
             let selection = window.getSelection();
-
 
             if (selection.type === 'Range') {
                 let answers = test.filter(item => item.question.includes(selection));
