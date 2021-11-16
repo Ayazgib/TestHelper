@@ -11,6 +11,8 @@ function createTest (test) {
     })
 }
 
+createTest(test);
+
 function setBlockPosition (e) {
     console.log(document.querySelector('body').scrollTop, block.scrollTop);
     block.style = `position: absolute; top: ${e.clientY + window.pageYOffset}px; left: ${e.clientX}px;`
@@ -21,6 +23,8 @@ function setBlockPosition (e) {
 window.onload = function() {
     createTest(test);
 
+    const currentLocation = window.location.href;
+    console.log(currentLocation);
     document.addEventListener('keydown', function(event) {
         while (block.firstElementChild) block.firstElementChild.remove();
         if (event.code == 'KeyZ') {
@@ -29,11 +33,14 @@ window.onload = function() {
             if (selection.type === 'Range') {
                 let answers = test.filter(item => item.question.includes(selection));
                 if (answers.length) {
+                    let answerString = ''
                     answers.forEach(answer => {
-                        block.insertAdjacentHTML('beforeend', `<p style="margin: 0; padding: 0">${answer.question.slice(0, 30)}<strong>${answer.answer}</strong></p>`)
+                        answerString += `${answer.question.slice(0, 30)}|${answer.answer}|`
+                        //block.insertAdjacentHTML('beforeend', `<p style="margin: 0; padding: 0">${answer.question.slice(0, 30)}<strong>${answer.answer}</strong></p>`)
                     })
+                    window.history.pushState("string", "Title", `?${answerString}`);
                 } else {
-                    block.insertAdjacentHTML('beforeend', `<p>Отчислен!</p>`)
+                    //block.insertAdjacentHTML('beforeend', `<p>Отчислен!</p>`)
                 }
                 document.addEventListener('mousemove',  setBlockPosition);
             }
