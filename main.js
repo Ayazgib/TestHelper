@@ -1,4 +1,5 @@
 import test from "./test.js";
+import newTest from "./newQuestions.js";
 
 let wrapper = document.querySelector('.questions');
 let block = document.createElement('div');
@@ -12,6 +13,7 @@ function createTest (test) {
 }
 
 createTest(test);
+createTest(newTest);
 
 function setBlockPosition (e) {
     console.log(document.querySelector('body').scrollTop, block.scrollTop);
@@ -19,10 +21,11 @@ function setBlockPosition (e) {
 }
 
 
-
 window.onload = function() {
     createTest(test);
+    createTest(newTest);
 
+    let concatArr = test.concat(newTest)
     const currentLocation = window.location.href;
     console.log(currentLocation);
     document.addEventListener('keydown', function(event) {
@@ -31,7 +34,7 @@ window.onload = function() {
             let selection = window.getSelection();
 
             if (selection.type === 'Range') {
-                let answers = test.filter(item => item.question.includes(selection));
+                let answers = concatArr.filter(item => item.question.includes(selection));
                 if (answers.length) {
                     let answerString = ''
                     answers.forEach(answer => {
