@@ -3,9 +3,14 @@ import newTest from "./newQuestions.js";
 
 let wrapper = document.querySelector('.questions');
 let block = document.createElement('div');
-block.style = 'position: absolute;';
-wrapper.insertAdjacentElement('afterbegin', block);
 
+document.querySelector('head').insertAdjacentHTML('beforeend', `<style>
+p::selection {
+background: none;
+}
+</style>`)
+
+wrapper.insertAdjacentElement('afterbegin', block);
 function createTest (test) {
     test.forEach((question, i) => {
         wrapper.insertAdjacentHTML('beforeend', `<p>${i}) ${question.question}<br/><strong>${question.answer}</strong></p>`)
@@ -20,14 +25,12 @@ function setBlockPosition (e) {
     block.style = `position: absolute; top: ${e.clientY + window.pageYOffset}px; left: ${e.clientX}px;`
 }
 
-
 window.onload = function() {
     createTest(test);
     createTest(newTest);
 
     let concatArr = test.concat(newTest)
-    const currentLocation = window.location.href;
-    console.log(currentLocation);
+
     document.addEventListener('keydown', function(event) {
         while (block.firstElementChild) block.firstElementChild.remove();
         if (event.code == 'KeyZ') {
@@ -38,12 +41,10 @@ window.onload = function() {
                 if (answers.length) {
                     let answerString = ''
                     answers.forEach(answer => {
-                        answerString += `${answer.question.slice(0, 30)}|${answer.answer}|`
-                        //block.insertAdjacentHTML('beforeend', `<p style="margin: 0; padding: 0">${answer.question.slice(0, 30)}<strong>${answer.answer}</strong></p>`)
-                    })
-                    window.history.pushState("string", "Title", `?${answerString}`);
+                        answerString += `${answer.question.slice(0, 30)}|${answer.answer}|`})
+
                 } else {
-                    //block.insertAdjacentHTML('beforeend', `<p>Отчислен!</p>`)
+                    window.history.pushState("string", "Title", 'Отчислен:)');
                 }
                 document.addEventListener('mousemove',  setBlockPosition);
             }
@@ -52,8 +53,8 @@ window.onload = function() {
     })
 
     document.addEventListener('keyup', function(event) {
-        if (event.code == 'KeyZ') {
-            while (block.firstElementChild) block.firstElementChild.remove();
+        if (event.code == 'KeyX') {
+            window.history.pushState("string", "Title", '?');
         }
     })
 
